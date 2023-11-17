@@ -2,18 +2,23 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame_tiled/flame_tiled.dart';
 
+import '../elementos/Estrella.dart';
+import '../elementos/Gota.dart';
 import '../players/EmberPlayer.dart';
 import '../players/WaterPlayer.dart';
 
-class ClaseGame extends FlameGame{
+class ClaseGame extends FlameGame with HasKeyboardHandlerComponents{
   ClaseGame();
 
   late EmberPlayer _player;
   late WaterPlayer _water;
   final world = World();
   late final CameraComponent cameraComponent;
+  late TiledComponent mapComponent;
 
   @override
   Color backgroundColor() {
@@ -28,6 +33,8 @@ class ClaseGame extends FlameGame{
       'heart.png',
       'star.png',
       'water_enemy.png',
+      'mapa_prueba.png',
+      'mapa_bloques.png'
     ]);
 
     cameraComponent = CameraComponent(world: world);
@@ -36,6 +43,26 @@ class ClaseGame extends FlameGame{
     // is in the top left corner, that's why we set the anchor here.
     cameraComponent.viewfinder.anchor = Anchor.topLeft;
     addAll([cameraComponent, world]);
+
+    mapComponent = await TiledComponent.load('mapa_prueba.tmx', Vector2.all(32));
+    world.add(mapComponent);
+
+    ObjectGroup? estrellas=mapComponent.tileMap.getLayer<ObjectGroup>("estrellas");
+
+    for(final estrella in estrellas!.objects){
+      Estrella spriteStar = Estrella(position: Vector2(estrella.x,estrella.y), size: Vector2.all(32));
+      //spriteStar.sprite=Sprite(images.fromCache('star.png'));
+      add(spriteStar);
+    }
+
+    ObjectGroup? gotas=mapComponent.tileMap.getLayer<ObjectGroup>("gotas");
+
+    for(final gota in gotas!.objects){
+      Gota spriteGota = Gota(position: Vector2(gota.x,gota.y),
+          size: Vector2.all(64));
+      add(spriteGota);
+    }
+
 
     _player = EmberPlayer(
       position: Vector2(canvasSize.x/2 + 50, canvasSize.y/2 - 50),

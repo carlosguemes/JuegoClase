@@ -51,7 +51,9 @@ class ClaseGame extends FlameGame with HasKeyboardHandlerComponents{
     ObjectGroup? estrellas=mapComponent.tileMap.getLayer<ObjectGroup>("estrellas");
 
     for(final estrella in estrellas!.objects){
-      Estrella spriteStar = Estrella(position: Vector2(estrella.x,estrella.y), size: Vector2.all(32));
+      Estrella spriteStar = Estrella(
+          position: Vector2(estrella.x,estrella.y),
+          size: Vector2.all(32));
       //spriteStar.sprite=Sprite(images.fromCache('star.png'));
       add(spriteStar);
     }
@@ -61,7 +63,7 @@ class ClaseGame extends FlameGame with HasKeyboardHandlerComponents{
     for(final gota in gotas!.objects){
       Gota spriteGota = Gota(position: Vector2(gota.x,gota.y),
           size: Vector2.all(32));
-      add(spriteGota);
+      world.add(spriteGota);
     }
 
 

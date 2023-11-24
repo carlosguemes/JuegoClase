@@ -15,8 +15,8 @@ class EmberPlayer extends SpriteAnimationComponent
   bool derecha = true;
 
   bool enElAire = false;
-  final double gravedad = 800.0;
-  final double alturaSalto = -400.0;
+  final double gravedad = 1200.0;
+  final double alturaSalto = -500.0;
 
   double posicionInicialY = 0.0;
 

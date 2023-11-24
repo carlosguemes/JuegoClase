@@ -19,6 +19,7 @@ class ClaseGame extends FlameGame with HasKeyboardHandlerComponents{
   final world = World();
   late final CameraComponent cameraComponent;
   late TiledComponent mapComponent;
+  late double tamanyo;
 
   @override
   Color backgroundColor() {
@@ -59,7 +60,7 @@ class ClaseGame extends FlameGame with HasKeyboardHandlerComponents{
 
     for(final gota in gotas!.objects){
       Gota spriteGota = Gota(position: Vector2(gota.x,gota.y),
-          size: Vector2.all(64));
+          size: Vector2.all(32));
       add(spriteGota);
     }
 

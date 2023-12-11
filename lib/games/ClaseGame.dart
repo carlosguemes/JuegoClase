@@ -68,7 +68,7 @@ class ClaseGame extends FlameGame with HasKeyboardHandlerComponents{
 
 
     _player = EmberPlayer(
-      position: Vector2(canvasSize.x/2 + 50, canvasSize.y/2 - 50),
+      position: Vector2(0, canvasSize.y-32),
     );
     world.add(_player);
 

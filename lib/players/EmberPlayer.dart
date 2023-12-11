@@ -1,12 +1,16 @@
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../elementos/Estrella.dart';
+import '../elementos/Gota.dart';
 import '../games/ClaseGame.dart';
 
 class EmberPlayer extends SpriteAnimationComponent
-    with HasGameRef<ClaseGame>, KeyboardHandler, HasCollisionDetection {
+    with HasGameRef<ClaseGame>,KeyboardHandler,CollisionCallbacks {
 
   int horizontalDirection = 0;
   int verticalDirection = 0;
@@ -15,9 +19,14 @@ class EmberPlayer extends SpriteAnimationComponent
   bool derecha = true;
 
   bool enElAire = false;
+  bool enLaPared = false;
   final double gravedad = 1200.0;
   final double alturaSalto = -500.0;
 
+  final _collisionStartColor = Colors.black87;
+  final _defaultColor = Colors.red;
+  late ShapeHitbox hitbox;
+  
   double posicionInicialY = 0.0;
 
   EmberPlayer({
@@ -27,7 +36,7 @@ class EmberPlayer extends SpriteAnimationComponent
   }
 
   @override
-  void onLoad() {
+  Future<void> onLoad() async {
     animation = SpriteAnimation.fromFrameData(
       game.images.fromCache('ember.png'),
       SpriteAnimationData.sequenced(
@@ -36,6 +45,47 @@ class EmberPlayer extends SpriteAnimationComponent
         stepTime: 0.12,
       ),
     );
+
+    final defaultPaint = Paint()
+      ..color = _defaultColor
+      ..style = PaintingStyle.stroke;
+
+    hitbox = RectangleHitbox()
+      ..paint = defaultPaint
+      ..isSolid=true
+      ..renderShape = true;
+    add(hitbox);
+
+    return super.onLoad();
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    // TODO: implement onCollision
+    if(other is Gota){
+      this.removeFromParent();
+    }
+    else if(other is Estrella){
+      other.removeFromParent();
+    }
+    super.onCollision(intersectionPoints, other);
+  }
+
+  @override
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints,
+      PositionComponent other,
+      ) {
+    super.onCollisionStart(intersectionPoints, other);
+    hitbox.paint.color = _collisionStartColor;
+  }
+
+  @override
+  void onCollisionEnd(PositionComponent other) {
+    super.onCollisionEnd(other);
+    if (!isColliding) {
+      hitbox.paint.color = _defaultColor;
+    }
   }
 
 
@@ -47,7 +97,12 @@ class EmberPlayer extends SpriteAnimationComponent
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
 
-    if (keysPressed.contains(LogicalKeyboardKey.arrowUp) && !enElAire) {
+    if (keysPressed.contains(LogicalKeyboardKey.arrowUp) && enLaPared){
+      saltar();
+      enLaPared = false;
+    }
+
+    else if (keysPressed.contains(LogicalKeyboardKey.arrowUp) && !enElAire) {
       saltar();
     }
     //horizontalDirection = 0;
@@ -116,16 +171,33 @@ class EmberPlayer extends SpriteAnimationComponent
       velocidad.y = 0;
     }
 
-    if (position.x >= screenWidth - width / 2) {
-    derecha = false;
+    //Movimiento hacia la izquierda si no está en el aire
+    if (position.x >= screenWidth - width / 2 && !enElAire) {
+      derecha = false;
+      enLaPared = false;
     }
 
-    if (position.x <= width / 2) {
-    derecha = true;
+    //Se queda en la pared si está en el aire cuando está en la derecha
+    else if (position.x >= screenWidth - width / 2 && enElAire){
+      position.x = screenWidth - width / 2;
+      enLaPared = true;
+    }
+
+    //Movimiento hacia la derecha si no está en el aire
+    else if (position.x <= width / 2 && !enElAire) {
+      derecha = true;
+      enLaPared = false;
+    }
+
+    //Se queda en la pared si está en el aire cuando está en la izquierda
+    else if (position.x <= width / 2 && enElAire) {
+      position.x = width / 2;
+      enLaPared = true;
     }
 
     // Cambiar la dirección basada en la variable 'derecha'
     horizontalDirection = derecha ? 1 : -1;
+
     super.update(dt);
   }
 

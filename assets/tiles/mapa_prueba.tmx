@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="7">
+<map version="1.10" tiledversion="git" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="11">
  <tileset firstgid="1" source="mapa_bloques.tsx"/>
- <layer id="1" name="Ground" width="50" height="40">
+ <layer id="1" name="Ground" width="50" height="40" offsetx="2" offsety="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -45,7 +45,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="2" name="estrellas">
+ <objectgroup id="2" name="estrellas" offsetx="4" offsety="162">
   <object id="1" x="781.333" y="497.333">
    <point/>
   </object>
@@ -65,15 +65,15 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="3" name="gotas">
-   <object id="8" x="345.455" y="451.515">
-    <point/>
-   </object>
-   <object id="9" x="399.5" y="504">
-    <point/>
-   </object>
-   <object id="10" x="339" y="500">
-    <point/>
-   </object>
-  </objectgroup>
+ <objectgroup id="3" name="gotas" offsetx="128" offsety="572">
+  <object id="8" x="345.455" y="451.515">
+   <point/>
+  </object>
+  <object id="9" x="399.5" y="504">
+   <point/>
+  </object>
+  <object id="10" x="339" y="500">
+   <point/>
+  </object>
+ </objectgroup>
 </map>

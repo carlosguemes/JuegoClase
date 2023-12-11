@@ -15,9 +15,11 @@ class EmberPlayer extends SpriteAnimationComponent
   int horizontalDirection = 0;
   int verticalDirection = 0;
   final Vector2 velocidad = Vector2.zero();
-  final double aceleracion = 300;
+  final double aceleracion = 500;
   bool derecha = true;
 
+  double screenWidth = 0;
+  bool saltoEnPared = false;
   bool enElAire = false;
   bool enLaPared = false;
   final double gravedad = 1200.0;
@@ -88,7 +90,6 @@ class EmberPlayer extends SpriteAnimationComponent
     }
   }
 
-
   void saltar() {
     velocidad.y = alturaSalto;
     enElAire = true;
@@ -97,12 +98,22 @@ class EmberPlayer extends SpriteAnimationComponent
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
 
-    if (keysPressed.contains(LogicalKeyboardKey.arrowUp) && enLaPared){
-      saltar();
-      enLaPared = false;
+    if (position.x >= screenWidth - width / 2){
+      if (keysPressed.contains(LogicalKeyboardKey.arrowUp) && enLaPared){
+        saltar();
+        derecha = false;
+      }
     }
 
-    else if (keysPressed.contains(LogicalKeyboardKey.arrowUp) && !enElAire) {
+    else if (position.x <= width / 2){
+      if (keysPressed.contains(LogicalKeyboardKey.arrowUp) && enLaPared){
+        saltar();
+        derecha = true;
+      }
+    }
+
+
+    if (keysPressed.contains(LogicalKeyboardKey.arrowUp) && !enElAire) {
       saltar();
     }
     //horizontalDirection = 0;
@@ -157,12 +168,11 @@ class EmberPlayer extends SpriteAnimationComponent
     velocidad.x = horizontalDirection * aceleracion;
     position += velocidad * dt;
 
-    double screenWidth = gameRef.size.x;
+    screenWidth = gameRef.size.x;
 
     if (enElAire) {
       velocidad.y += gravedad * dt;
     }
-
 
     // Verificar si ha tocado el suelo
     if (position.y >= posicionInicialY) {
@@ -178,19 +188,19 @@ class EmberPlayer extends SpriteAnimationComponent
     }
 
     //Se queda en la pared si está en el aire cuando está en la derecha
-    else if (position.x >= screenWidth - width / 2 && enElAire){
+    if (position.x >= screenWidth - width / 2 && enElAire){
       position.x = screenWidth - width / 2;
       enLaPared = true;
     }
 
     //Movimiento hacia la derecha si no está en el aire
-    else if (position.x <= width / 2 && !enElAire) {
+    if (position.x <= width / 2 && !enElAire) {
       derecha = true;
       enLaPared = false;
     }
 
     //Se queda en la pared si está en el aire cuando está en la izquierda
-    else if (position.x <= width / 2 && enElAire) {
+    if (position.x <= width / 2 && enElAire) {
       position.x = width / 2;
       enLaPared = true;
     }

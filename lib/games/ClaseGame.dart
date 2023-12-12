@@ -21,6 +21,13 @@ class ClaseGame extends FlameGame with HasKeyboardHandlerComponents{
   late TiledComponent mapComponent;
   late double tamanyo;
 
+
+  double gameWidth = 1920;
+  double gameHeigth = 1080;
+
+  double wScale = 1.0;
+  double hScale = 1.0;
+
   @override
   Color backgroundColor() {
     return const Color.fromARGB(255, 173, 223, 255);
@@ -38,6 +45,9 @@ class ClaseGame extends FlameGame with HasKeyboardHandlerComponents{
       'mapa_bloques.png'
     ]);
 
+    wScale = size.x/gameWidth;
+    hScale = size.y/gameHeigth;
+
     cameraComponent = CameraComponent(world: world);
     // Everything in this tutorial assumes that the position
     // of the `CameraComponent`s viewfinder (where the camera is looking)
@@ -45,15 +55,15 @@ class ClaseGame extends FlameGame with HasKeyboardHandlerComponents{
     cameraComponent.viewfinder.anchor = Anchor.topLeft;
     addAll([cameraComponent, world]);
 
-    mapComponent = await TiledComponent.load('mapa_prueba.tmx', Vector2.all(32));
+    mapComponent = await TiledComponent.load('mapa_prueba.tmx', Vector2(32*wScale, 32*hScale));
     world.add(mapComponent);
 
     ObjectGroup? estrellas=mapComponent.tileMap.getLayer<ObjectGroup>("estrellas");
 
     for(final estrella in estrellas!.objects){
       Estrella spriteStar = Estrella(
-          position: Vector2(estrella.x,estrella.y),
-          size: Vector2.all(32));
+          position: Vector2(estrella.x * wScale,estrella.y * hScale),
+          size: Vector2(32*wScale, 32*hScale));
       //spriteStar.sprite=Sprite(images.fromCache('star.png'));
       add(spriteStar);
     }
@@ -61,8 +71,8 @@ class ClaseGame extends FlameGame with HasKeyboardHandlerComponents{
     ObjectGroup? gotas=mapComponent.tileMap.getLayer<ObjectGroup>("gotas");
 
     for(final gota in gotas!.objects){
-      Gota spriteGota = Gota(position: Vector2(gota.x,gota.y),
-          size: Vector2.all(32));
+      Gota spriteGota = Gota(position: Vector2(gota.x * wScale,gota.y * hScale),
+          size: Vector2(32*wScale, 32*hScale));
       world.add(spriteGota);
     }
 

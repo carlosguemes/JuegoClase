@@ -15,7 +15,7 @@ class EmberPlayer extends SpriteAnimationComponent
   int horizontalDirection = 0;
   int verticalDirection = 0;
   final Vector2 velocidad = Vector2.zero();
-  final double aceleracion = 500;
+  double aceleracion = 500;
   bool derecha = true;
 
   double screenWidth = 0;
@@ -97,18 +97,17 @@ class EmberPlayer extends SpriteAnimationComponent
 
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-
     if (position.x >= screenWidth - width / 2){
       if (keysPressed.contains(LogicalKeyboardKey.arrowUp) && enLaPared){
         saltar();
-        derecha = false;
+        derecha = !derecha;
       }
     }
 
     else if (position.x <= width / 2){
       if (keysPressed.contains(LogicalKeyboardKey.arrowUp) && enLaPared){
         saltar();
-        derecha = true;
+        derecha = !derecha;
       }
     }
 
@@ -182,8 +181,8 @@ class EmberPlayer extends SpriteAnimationComponent
     }
 
     //Movimiento hacia la izquierda si no está en el aire
-    if (position.x >= screenWidth - width / 2 && !enElAire) {
-      derecha = false;
+    if (position.x > screenWidth - width / 2 && !enElAire) {
+      derecha = !derecha;
       enLaPared = false;
     }
 
@@ -194,8 +193,8 @@ class EmberPlayer extends SpriteAnimationComponent
     }
 
     //Movimiento hacia la derecha si no está en el aire
-    if (position.x <= width / 2 && !enElAire) {
-      derecha = true;
+    if (position.x < width / 2 && !enElAire) {
+      derecha = !derecha;
       enLaPared = false;
     }
 

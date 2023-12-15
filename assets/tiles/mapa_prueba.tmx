@@ -66,13 +66,13 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="gotas" offsetx="128" offsety="572">
-  <object id="8" x="345.455" y="451.515">
+  <object id="8" x="448.485" y="245.454">
    <point/>
   </object>
-  <object id="9" x="399.5" y="504">
+  <object id="9" x="214.652" y="228.242">
    <point/>
   </object>
-  <object id="10" x="339" y="500">
+  <object id="10" x="348.091" y="251.515">
    <point/>
   </object>
  </objectgroup>

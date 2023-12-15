@@ -4,6 +4,7 @@ import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 
 import '../elementos/Estrella.dart';
@@ -11,12 +12,12 @@ import '../elementos/Gota.dart';
 import '../players/EmberPlayer.dart';
 import '../players/WaterPlayer.dart';
 
-class ClaseGame extends FlameGame with HasKeyboardHandlerComponents{
+class ClaseGame extends Forge2DGame with HasKeyboardHandlerComponents{
   ClaseGame();
 
   late EmberPlayer _player;
   late WaterPlayer _water;
-  final world = World();
+  //final world = World();
   late final CameraComponent cameraComponent;
   late TiledComponent mapComponent;
   late double tamanyo;
@@ -78,7 +79,7 @@ class ClaseGame extends FlameGame with HasKeyboardHandlerComponents{
 
 
     _player = EmberPlayer(
-      position: Vector2(0, canvasSize.y-32),
+      position: Vector2(32, canvasSize.y-32),
     );
     world.add(_player);
 

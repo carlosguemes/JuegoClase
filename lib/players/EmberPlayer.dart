@@ -1,6 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
+import 'package:flame_forge2d/body_component.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -58,16 +59,18 @@ class EmberPlayer extends SpriteAnimationComponent
       ..renderShape = true;
     add(hitbox);
 
-    return super.onLoad();
+
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     // TODO: implement onCollision
     if(other is Gota){
+      print('En colision');
       this.removeFromParent();
     }
     else if(other is Estrella){
+      print('En colision');
       other.removeFromParent();
     }
     super.onCollision(intersectionPoints, other);
@@ -78,6 +81,7 @@ class EmberPlayer extends SpriteAnimationComponent
       Set<Vector2> intersectionPoints,
       PositionComponent other,
       ) {
+    print('Inicio');
     super.onCollisionStart(intersectionPoints, other);
     hitbox.paint.color = _collisionStartColor;
   }
@@ -85,6 +89,7 @@ class EmberPlayer extends SpriteAnimationComponent
   @override
   void onCollisionEnd(PositionComponent other) {
     super.onCollisionEnd(other);
+    print('Al acabar');
     if (!isColliding) {
       hitbox.paint.color = _defaultColor;
     }
@@ -210,4 +215,11 @@ class EmberPlayer extends SpriteAnimationComponent
     super.update(dt);
   }
 
+}
+
+class EmberPlayerBody extends BodyComponent{
+
+  late Vector2 vector2Tamano;
+
+  EmberPlayerBody({required this.vector2Tamano});
 }
